@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  laravelapp:
+    container_name: laravelapp
+    image: israel502/laravelapp:${TAG:-latest}
+    build: . 
+    ports:
+      - ${SERVER_PORT:-8000}:8000
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:12
+    ports:
+      - ${DB_PORT:-5432}:5432
+    environment:
+      - POSTGRES_USER=${DB_USERNAME:-homestead}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-secret}
+      - POSTGRES_DB=${DB_DATABASE:-homestead}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
